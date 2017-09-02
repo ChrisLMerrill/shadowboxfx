@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+version 1.0
+group = 'net.christophermerrill'
+
+repositories
+    {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    }
+
+dependencies
+    {
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.testfx:testfx-core:4.0.4-alpha'
+    testCompile 'org.testfx:testfx-junit:4.0.4-alpha'
+    testCompile 'org.testfx:testfx-legacy:4.0.4-alpha'
+    }
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+    }
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+    }
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+    }
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+      tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
+  }
+
