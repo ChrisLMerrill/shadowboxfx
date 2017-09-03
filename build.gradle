@@ -1,13 +1,17 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
-version 1.0
+version 1.0  // also change this below for repo publishing
 group = 'net.christophermerrill'
 
 repositories
     {
     mavenLocal()
-    mavenCentral()
     jcenter()
     }
 
@@ -42,3 +46,63 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
   }
 
+install {
+    repositories.mavenInstaller {
+    pom.project {
+            packaging 'jar'
+            groupId project.group
+            artifactId 'ShadowboxFx'
+            description 'Controls to add shadow-boxed controls to a JavaFX UI.'
+            version project.version
+            name 'shadowboxfx' // pom.project.name must be same as bintray.pkg.name
+            url 'https://github.com/ChrisLMerrill/shadowboxfx'
+            inceptionYear '2017' // HARDCODED
+            licenses {
+                license { // HARDCODED
+                    name 'Apache-2.0'
+                    url 'https://www.apache.org/licenses/LICENSE-2.0'
+                    distribution 'repo'
+                }
+            }
+            developers {
+                developer {
+                    id "ChrisLMerrill"
+                    name "Chris Merrill"
+                    email "osdev@christophermerrill.net"
+                }
+            }
+            scm {
+                    connection 'https://github.com/ChrisLMerrill/shadowboxfx.git'
+                    developerConnection 'https://github.com/ChrisLMerrill'
+                    url 'https://github.com/ChrisLMerrill/shadowboxfx'
+            }
+        }
+    }
+}
+
+bintray {
+    user = BINTRAY_UPLOAD_USERNAME
+    key = BINTRAY_UPLOAD_APIKEY
+    pkg {
+        repo = 'maven'
+        name = 'shadowboxfx'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/ChrisLMerrill/shadowboxfx.git'
+        version {
+            name = project.version
+            released  = new Date()
+            gpg {
+                sign = true
+                passphrase = GPG_JARSIGN_PASSPHRASE
+            }
+            mavenCentralSync {
+                sync = true //[Default: true] Determines whether to sync the version to Maven Central.
+                user = MAVENCENTRAL_USERNAME
+                password = MAVENCENTRAL_PASSWORD
+                close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+            }
+        }
+    configurations = ['archives']
+    }
+
+}
