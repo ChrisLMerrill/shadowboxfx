@@ -1,12 +1,12 @@
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+    id 'com.jfrog.bintray'; version '1.7.3'
 }
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-version 1.0  // also change this below for repo publishing
+version 1.0 
 group = 'net.christophermerrill'
 
 repositories
@@ -66,9 +66,9 @@ install {
             }
             developers {
                 developer {
-                    id "ChrisLMerrill"
-                    name "Chris Merrill"
-                    email "osdev@christophermerrill.net"
+                    id 'ChrisLMerrill'
+                    name 'Chris Merrill'
+                    email 'osdev@christophermerrill.net'
                 }
             }
             scm {
