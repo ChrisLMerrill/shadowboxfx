@@ -20,6 +20,8 @@ public class ShadowboxPane extends StackPane
 
         getChildren().add(glass);
         _glass = glass;
+
+        overlay.requestFocus();
         }
 
     public void removeOverlay()
