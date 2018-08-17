@@ -6,7 +6,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-version 1.1
+version 1.2
 group = 'net.christophermerrill'
 
 repositories
@@ -18,9 +18,8 @@ repositories
 dependencies
     {
     testCompile 'junit:junit:4.12'
-    testCompile 'org.testfx:testfx-core:4.0.4-alpha'
-    testCompile 'org.testfx:testfx-junit:4.0.4-alpha'
-    testCompile 'org.testfx:testfx-legacy:4.0.4-alpha'
+    compile 'org.testfx:testfx-core:4.0.13-alpha'
+    compile 'org.testfx:testfx-junit:4.0.13-alpha'
     }
 
 task sourcesJar(type: Jar) {
@@ -47,7 +46,7 @@ if (JavaVersion.current().isJava8Compatible()) {
   }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.2'
+    gradleVersion = '4.9'
 }
 
 install {
