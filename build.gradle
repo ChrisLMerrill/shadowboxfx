@@ -1,12 +1,10 @@
 plugins {
+    id 'java'
+    id 'maven-publish'
     id 'com.jfrog.bintray' version '1.7.3'
 }
 
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-
-version 1.2
+version 1.3
 group = 'net.christophermerrill'
 
 repositories
@@ -23,12 +21,17 @@ dependencies
     }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
     }
 
+javadoc {
+    include 'com/company/project/pkg/*'
+    options.addBooleanOption('html5', true)
+}
+
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc
     }
 
@@ -45,41 +48,49 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
   }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.9'
+wrapper {
+    gradleVersion = '5.6.2'
 }
 
-install {
-    repositories.mavenInstaller {
-    pom.project {
-            packaging 'jar'
-            groupId project.group
-            artifactId 'ShadowboxFx'
-            description 'Controls to add shadow-boxed controls to a JavaFX UI.'
-            version project.version
-            name 'shadowboxfx' // pom.project.name must be same as bintray.pkg.name
-            url 'https://github.com/ChrisLMerrill/shadowboxfx'
-            inceptionYear '2017' // HARDCODED
-            licenses {
-                license { // HARDCODED
-                    name 'Apache-2.0'
-                    url 'https://www.apache.org/licenses/LICENSE-2.0'
-                    distribution 'repo'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                name = 'ShadowboxFx' // pom.project.name must be same as bintray.pkg.name
+                description = 'Controls to add shadow-boxed controls to a JavaFX UI.'
+                url = 'https://github.com/ChrisLMerrill/shadowboxfx'
+                packaging = 'jar'
+                groupId = project.group
+                artifactId = 'ShadowboxFx'
+                version = project.version
+                inceptionYear = '2017' // HARDCODED
+                licenses {
+                    license { // HARDCODED
+                        name = 'Apache-2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                        distribution = 'repo'
+                    }
                 }
-            }
-            developers {
-                developer {
-                    id 'ChrisLMerrill'
-                    name 'Chris Merrill'
-                    email 'osdev@christophermerrill.net'
+                developers {
+                    developer {
+                        id = "ChrisLMerrill"
+                        name = "Chris Merrill"
+                        email = "osdev@christophermerrill.net"
+                    }
                 }
-            }
-            scm {
-                    connection 'https://github.com/ChrisLMerrill/shadowboxfx.git'
-                    developerConnection 'https://github.com/ChrisLMerrill'
-                    url 'https://github.com/ChrisLMerrill/shadowboxfx'
+                scm {
+                    connection = 'https://github.com/ChrisLMerrill/shadowboxfx.git'
+                    developerConnection = 'https://github.com/ChrisLMerrill'
+                    url = 'https://github.com/ChrisLMerrill/shadowboxfx'
+                }
             }
         }
+    }
+    repositories {
+        mavenLocal()
     }
 }
 
@@ -107,5 +118,4 @@ bintray {
         }
     configurations = ['archives']
     }
-
 }
