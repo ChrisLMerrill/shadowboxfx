@@ -1,11 +1,17 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.7.3'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 version 1.3
 group = 'net.christophermerrill'
+
+javafx {
+    version = "12.0.2"
+    modules = [ 'javafx.controls' ]
+}
 
 repositories
     {
@@ -15,9 +21,11 @@ repositories
 
 dependencies
     {
-    testCompile 'junit:junit:4.12'
-    compile 'org.testfx:testfx-core:4.0.13-alpha'
-    compile 'org.testfx:testfx-junit:4.0.13-alpha'
+    api 'org.openjfx:javafx-controls:12.0.2'
+
+    testImplementation 'org.testfx:testfx-core:4.0.13-alpha'
+    testImplementation 'org.testfx:testfx-junit:4.0.13-alpha'
+    testImplementation 'junit:junit:4.12'
     }
 
 task sourcesJar(type: Jar) {
