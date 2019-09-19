@@ -34,7 +34,7 @@ task sourcesJar(type: Jar) {
     }
 
 javadoc {
-    include 'com/company/project/pkg/*'
+    include 'net/christophermerrill/ShadowboxFx/*'
     options.addBooleanOption('html5', true)
 }
 
