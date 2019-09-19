@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'com.jfrog.bintray' version '1.7.3'
+    id 'com.jfrog.bintray' version '1.8.4'
     id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
@@ -67,7 +67,7 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
             pom {
-                name = 'ShadowboxFx' // pom.project.name must be same as bintray.pkg.name
+                name = 'shadowboxfx' // pom.project.name must be same as bintray.pkg.name
                 description = 'Controls to add shadow-boxed controls to a JavaFX UI.'
                 url = 'https://github.com/ChrisLMerrill/shadowboxfx'
                 packaging = 'jar'
@@ -97,14 +97,12 @@ publishing {
             }
         }
     }
-    repositories {
-        mavenLocal()
-    }
 }
 
 bintray {
     user = BINTRAY_UPLOAD_USERNAME
     key = BINTRAY_UPLOAD_APIKEY
+    publications = ['mavenJava']
     pkg {
         repo = 'maven'
         name = 'shadowboxfx'
@@ -124,6 +122,5 @@ bintray {
                 close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
             }
         }
-    configurations = ['archives']
     }
 }
