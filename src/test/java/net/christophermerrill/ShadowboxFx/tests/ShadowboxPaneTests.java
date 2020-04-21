@@ -5,8 +5,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import net.christophermerrill.ShadowboxFx.*;
-import org.junit.*;
-import org.testfx.framework.junit.*;
+import org.junit.jupiter.api.*;
+import org.testfx.framework.junit5.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Christopher L Merrill (see LICENSE.txt for license details)
@@ -31,19 +33,19 @@ public class ShadowboxPaneTests extends ApplicationTest
 
         String to_click = "cell1";
         clickOn(to_click);
-        Assert.assertEquals("Unable to click on underlying comonent", to_click, _clicked);
+        assertEquals(to_click, _clicked, "Unable to click on underlying comonent");
 
         clickOn("#overlay");
-        Assert.assertTrue("Unable to click overlay component", _overlay_clicked);
+        assertTrue(_overlay_clicked, "Unable to click overlay component");
 
         _clicked = null;
         clickOn("cell9");
-        Assert.assertNull("Was allowed to click through the overlay", _clicked);
+        assertNull(_clicked, "Was allowed to click through the overlay");
 
         _shadowbox.removeOverlay();
 
         clickOn("cell9");
-        Assert.assertNotNull("Was unable to click button after removing overlay", _clicked);
+        assertNotNull(_clicked, "Was unable to click button after removing overlay");
         }
 
     @Test
@@ -56,12 +58,12 @@ public class ShadowboxPaneTests extends ApplicationTest
             };
 
         clickOn("cell1");
-        Assert.assertTrue(_shadowbox.isShowingOverlay());
-        Assert.assertNotNull(lookup("alert title").query());
-        Assert.assertNotNull(lookup("alert message").query());
+        assertTrue(_shadowbox.isShowingOverlay());
+        assertNotNull(lookup("alert title").query());
+        assertNotNull(lookup("alert message").query());
         clickOn(ButtonType.OK.getText());
-        Assert.assertFalse(_shadowbox.isShowingOverlay());
-        Assert.assertEquals(ButtonType.OK, _alert.getResult());
+        assertFalse(_shadowbox.isShowingOverlay());
+        assertEquals(ButtonType.OK, _alert.getResult());
         }
 
     @Test
@@ -74,14 +76,14 @@ public class ShadowboxPaneTests extends ApplicationTest
             };
 
         clickOn("cell1");
-        Assert.assertNotNull(lookup(ButtonType.OK.getText()).query());
-        Assert.assertNotNull(lookup(ButtonType.CANCEL.getText()).query());
+        assertNotNull(lookup(ButtonType.OK.getText()).query());
+        assertNotNull(lookup(ButtonType.CANCEL.getText()).query());
         clickOn(ButtonType.CANCEL.getText());
-        Assert.assertEquals(ButtonType.CANCEL, _alert.getResult());
+        assertEquals(ButtonType.CANCEL, _alert.getResult());
         }
 
     @Override
-    public void start(Stage stage) throws Exception
+    public void start(Stage stage)
         {
         _shadowbox = new ShadowboxPane();
 
